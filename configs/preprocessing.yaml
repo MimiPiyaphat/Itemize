@@ -1,0 +1,67 @@
+# ==============================================================================
+# [เครื่อง CPU - คนที่ 1] Multi-View Classical DIP Pre-processing Configuration
+# ==============================================================================
+
+project:
+  name: "Itemize"
+  capture_mode: "multi_view"
+
+io:
+  input_root: "data/01_raw"
+  output_root: "data/02_processed"
+  output_format: "png"          # Lossless PNG only (avoid JPEG artifacts on edges)
+  fix_exif_orientation: true    # Auto-rotate smartphone photos via EXIF tag
+  target_size: [1024, 1024]     # Uniform resolution across all views [width, height]
+  keep_aspect_ratio: true
+  pad_mode: "edge"              # constant | edge | reflect
+
+# Multi-View Quality Screening (filter blurry frames before sending to GPU)
+quality_check:
+  enabled: true
+  blur_metric: "laplacian_variance"
+  min_sharpness_score: 80.0     # Flag views below this threshold for review/re-shoot
+  min_valid_views: 4            # Minimum views required per object
+
+# Week 3: Intensity Transformation
+intensity:
+  gamma_correction:
+    enabled: true
+    mode: "auto"                # auto (adaptive to mean luminance) | fixed
+    gamma: 1.0                  # Used when mode == "fixed"
+    target_mean_luma: 125.0     # Target brightness (0-255) for cross-view consistency
+
+# Week 4: Histogram & Contrast Enhancement
+histogram:
+  clahe:
+    enabled: true
+    color_space: "LAB"          # Apply CLAHE only on L-channel to preserve hue/color
+    clip_limit: 2.0
+    tile_grid_size: [8, 8]
+
+# Cross-View White Balance & Color Consistency (crucial for Multi-View 3D textures)
+white_balance:
+  enabled: true
+  method: "gray_world"          # gray_world | shades_of_gray | reference_view
+  cross_view_normalize: true    # Match exposure/color stats across views of same object
+
+# Week 5-6: Spatial Filtering & Noise Restoration
+restoration:
+  denoise:
+    enabled: true
+    method: "bilateral"         # bilateral (edge-preserving) | median | nlm | gaussian
+    bilateral:
+      d: 9
+      sigma_color: 50
+      sigma_space: 50
+    median:
+      ksize: 5
+    nlm:
+      h: 7
+      template_window_size: 7
+      search_window_size: 21
+
+# Week 7: Geometry & Perspective Alignment
+geometry:
+  perspective_correction:
+    enabled: false              # Enable when calibrating with markers / reference plane
+  center_crop_margin: 0.05

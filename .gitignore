@@ -1,0 +1,77 @@
+# ==========================================
+# Python & Virtual Environments
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+.venv-gpu/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# ==========================================
+# IDE & OS
+# ==========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Data, Results & Heavy Binary Assets
+# Keep directory layout via .gitkeep, sync heavy files via Drive/OneDrive/LAN
+# ==========================================
+data/**/*
+!data/**/
+!data/**/.gitkeep
+
+results/**/*
+!results/**/
+!results/**/.gitkeep
+
+# Common media & 3D mesh files outside tracked docs
+*.glb
+*.gltf
+*.obj
+*.mtl
+*.ply
+*.fbx
+*.stl
+*.mp4
+*.mov
+
+# ==========================================
+# Model Weights & Third-Party Cloned Repos
+# ==========================================
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.onnx
+*.bin
+weights/
+checkpoints/
+
+third_party/**/*
+!third_party/**/
+!third_party/**/.gitkeep
+
+# ==========================================
+# Unity Project (Optional Game Integration)
+# ==========================================
+unity/[Ll]ibrary/
+unity/[Tt]emp/
+unity/[Oo]bj/
+unity/[Bb]uild/
+unity/[Bb]uilds/
+unity/[Ll]ogs/
+unity/[Uu]ser[Ss]ettings/
+unity/MemoryCaptures/
+unity/*.csproj
+unity/*.sln
+unity/*.user

@@ -1,0 +1,34 @@
+# ==============================================================================
+# [เครื่อง GPU - คนที่ 2] Multi-View 3D Reconstruction & Game Export Config
+# ==============================================================================
+
+io:
+  input_rgba_root: "data/05_segmented"
+  output_3d_root: "data/06_models_3d"
+  metadata_root: "data/07_metadata"
+
+# Multi-View Reconstruction Settings
+reconstruction:
+  mode: "multi_view"            # multi_view (primary) | single_view (baseline comparison)
+  primary_model: "instantmesh"  # instantmesh (multi-view) | triposr (single-view baseline)
+  expected_views: 6             # Recommended sparse multi-view count (4, 6, or 8 views)
+  view_selection: "uniform"     # uniform | sharpest_k
+
+  instantmesh:
+    repo_dir: "third_party/InstantMesh"
+    config_name: "instant-mesh-large"
+    diffusion_steps: 75
+    texture_resolution: 1024
+    export_texmap: true
+
+  triposr:
+    repo_dir: "third_party/TripoSR"
+    chunk_size: 8192
+    mc_resolution: 256          # Marching cubes resolution
+
+# Game-Ready Export Settings (Unity + GLTFast)
+export:
+  formats: ["glb", "obj"]       # .glb is primary for Unity GLTFast
+  normalize_scale: true         # Normalize largest dimension to 1.0 Unity unit (1m)
+  center_pivot: "bottom_center" # Place pivot at base of object for floor placement
+  target_max_faces: 20000       # Decimate mesh if too dense for real-time game

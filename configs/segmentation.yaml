@@ -1,0 +1,49 @@
+# ==============================================================================
+# Multi-View Segmentation Configuration (CPU Classical vs GPU Deep Learning)
+# ==============================================================================
+
+io:
+  input_processed_root: "data/02_processed"
+  input_raw_root: "data/01_raw"
+  gt_mask_root: "data/03_ground_truth/masks"
+  mask_output_root: "data/04_masks"
+  rgba_output_root: "data/05_segmented"
+
+# Post-processing applied to masks before generating 4-channel RGBA cutouts
+cutout:
+  output_size: [512, 512]       # Standard square input for multi-view 3D models
+  foreground_ratio: 0.80        # Object occupies ~80% of frame height/width
+  background_rgba: [0, 0, 0, 0] # Transparent background
+
+# [เครื่อง CPU - คนที่ 1] Classical Segmentation (Weeks 9-11)
+classical_cpu:
+  method: "grabcut"             # hsv_threshold | canny_contour | grabcut
+  hsv_threshold:
+    lower: [0, 30, 30]
+    upper: [179, 255, 255]
+    invert_mask: false
+  canny_contour:
+    low_threshold: 50
+    high_threshold: 150
+    dilate_iterations: 2
+    keep_largest_contour: true
+  grabcut:
+    iterations: 5
+    init_margin_ratio: 0.08     # Initial bounding box inset from image border
+  morphology:
+    enabled: true
+    kernel_size: 5
+    open_iterations: 1          # Remove small background speckles
+    close_iterations: 2         # Fill small holes inside foreground mask
+
+# [เครื่อง GPU - คนที่ 2] Deep Learning Segmentation (Weeks 10-13)
+deep_learning_gpu:
+  method: "rembg"               # rembg | sam2
+  rembg:
+    model_name: "u2net"         # u2net | isnet-general-use | birefnet-general
+    alpha_matting: true
+    alpha_matting_foreground_threshold: 240
+    alpha_matting_background_threshold: 10
+  sam2:
+    checkpoint: "third_party/sam2/checkpoints/sam2_hiera_small.pt"
+    use_multi_view_propagation: true  # Propagate mask across sequential views
