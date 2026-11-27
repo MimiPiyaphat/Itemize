@@ -1,5 +1,9 @@
 # Itemize — Multi-View Photo-to-3D Reconstruction & Game Integration
 
+**งานรายวิชารอบนี้:** ถ่ายวัตถุหลายมุม → สร้างไฟล์ `.glb` ด้วย COLMAP → นำไปแก้รูปทรงใน Blender ดู[คู่มือเริ่มต้นบน Windows](docs/photogrammetry-quickstart.md) สำหรับแผนเดโมสองเดือนเศษ
+
+รายละเอียดด้านล่างเป็นแผนตั้งต้นสำหรับเส้นทาง InstantMesh และ Unity
+
 > **โปรเจกต์รายวิชา Digital Image Processing & Computer Vision (ระยะเวลา 15 สัปดาห์ | ทำคู่ 2 คน)**  
 > **เป้าหมายหลัก:** ถ่ายภาพวัตถุจริง **หลายมุมมอง (Multi-View)** → ปรับปรุงคุณภาพภาพและปรับแสง/สีให้สม่ำเสมอข้ามทุกมุม (Classical DIP) → ตัดพื้นหลัง (เทียบวิธีพื้นฐาน vs Deep Learning) → สร้างโมเดล 3 มิติ (`.glb` / `.obj`) → *(เป้าหมายเสริม)* นำเข้าสู่เกม Unity อัตโนมัติด้วย `GLTFast`
 
